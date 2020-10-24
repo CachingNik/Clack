@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import Navigator from './src/navigations/AuthStack';
+import { StyleSheet } from 'react-native';
+import Providers from './src/navigations/index';
 
 export default function App() {
   return (
-      <Navigator />
+    <Providers />
   );
 }
 
 const styles = StyleSheet.create({
-  
+
 });

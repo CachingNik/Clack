@@ -16,6 +16,10 @@ export default function LoginScreen({ navigation }){
     }
 
     const click2 = () => {
+        navigation.navigate('Home')
+    }
+
+    const click3 = () => {
         navigation.navigate('Signup')
     }
 
@@ -26,8 +30,8 @@ export default function LoginScreen({ navigation }){
             <FormInput label='Password' 
             secureTextEntry={hide.text} 
             right={<TextInput.Icon name={hide.icon} onPress={click1} size={18} />} />
-            <FormButton title='Login' mode='contained' icon='login' />
-            <FormButton title="New User? Sign UP" onPress={click2} />
+            <FormButton title='Login' mode='contained' icon='login' onPress={click2} />
+            <FormButton title="New User? Sign UP" onPress={click3} />
         </View>
     );
 }

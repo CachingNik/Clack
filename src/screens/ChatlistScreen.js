@@ -1,26 +1,47 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import { FAB } from 'react-native-paper';
+import { FAB, Provider, Portal } from 'react-native-paper';
 
 export default function ChatlistScreen() {
+
+    const [ open, setFab ] = useState(false)
 
     const click = () => {
 
     }
 
+    const cc = () => {
+        
+    }
+
     return(
-        <FAB style={styles.fb} 
-        icon='plus'
-        onPress={click}
-        theme={{ colors: { accent: 'blue' } }} />
+        <Provider>
+            <Portal>
+                <FAB.Group style={styles.main} 
+                icon='cog'
+                onPress={click}
+                onStateChange={({ open }) => { setFab(open) }}
+                open={open}
+                fabStyle={styles.button}
+                theme={{ colors: { accent: 'black' } }}
+                actions={[
+                    {icon: 'plus',
+                    label: 'Create Chat',
+                    onPress: cc}
+                ]} />
+            </Portal>
+        </Provider>
     );
 }
 
 const styles = StyleSheet.create({
-    fb: {
+    main: {
         position: 'absolute',
         margin: 16,
         right: 0,
         bottom: 0
+    },
+    button: {
+        backgroundColor: "#607D8B"
     }
 });

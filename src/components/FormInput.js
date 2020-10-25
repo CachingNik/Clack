@@ -4,12 +4,12 @@ import { TextInput } from 'react-native-paper';
 
 const { width, height } = Dimensions.get('screen');
 
-export default function FormInput({ label, ...rest }) {
+export default function FormInput({ label, mode='outlined', ...rest }) {
     return(
         <TextInput label={label}
         style={styles.input}
         numberOfLines={1}
-        mode='outlined'
+        mode={mode}
         {...rest} />
     );
 }

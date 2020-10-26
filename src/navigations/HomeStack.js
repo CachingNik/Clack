@@ -1,32 +1,21 @@
-import React from 'react';
-import { createMaterialBottomTabNavigator } from 'react-navigation-material-bottom-tabs';
+import { createStackNavigator } from 'react-navigation-stack';
 import { createAppContainer } from 'react-navigation';
-import ChatlistScreen from '../screens/ChatlistScreen';
-import ProfileScreen from '../screens/ProfileScreen';
-import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import HomeTab from './HomeTab';
+import ChatScreen from '../screens/ChatScreen';
 
 const screens = {
-  Profile: {
-    screen: ProfileScreen,
+  Tab: {
+    screen: HomeTab,
     navigationOptions: {
-      tabBarColor: '#3F51B5',
-      tabBarIcon: () => (<MaterialCommunityIcons name='account' size={22} color='white' />)
+      title: 'MurMur',
+      headerLeft: () => {false}
     }
   },
-  Chatlist: {
-    screen: ChatlistScreen,
-    navigationOptions: {
-      title: 'Chats',
-      tabBarColor: '#607D8B',
-      tabBarIcon: () => (<MaterialCommunityIcons name='message' size={22} color='white' />)
-    }
+  Chat: {
+    screen: ChatScreen
   }
-};
+}
 
-const setts = {
-  shifting: true
-};
+const stack = createStackNavigator(screens)
 
-const TabNavigator =  createMaterialBottomTabNavigator(screens, setts)
-
-export default createAppContainer(TabNavigator);
+export default createAppContainer(stack)

@@ -11,13 +11,13 @@ export default function FormDialog({ title, visible, label, close, ...rest }) {
             <Dialog.Content>
                 <Text style={styles.title} >{title}</Text>
             </Dialog.Content>
-                <Dialog.Actions>
-                    <FormInput label={label} />
-                </Dialog.Actions>
-                <Dialog.Actions>
-                   <IconButton icon='check-circle' color='green' size={30} onPress={() => {}} />
-                   <IconButton icon='close-circle' color='red' size={30} onPress={close} />
-                </Dialog.Actions>
+            <Dialog.Actions>
+                <FormInput label={label} mode='flat' />
+            </Dialog.Actions>
+            <Dialog.Actions>
+                <IconButton icon='check-circle' color='green' size={30} onPress={() => {}} />
+                <IconButton icon='close-circle' color='red' size={30} onPress={close} />
+            </Dialog.Actions>
             </Dialog>
         </Portal>
     );
@@ -26,10 +26,7 @@ export default function FormDialog({ title, visible, label, close, ...rest }) {
 const styles = StyleSheet.create({
     dialog: {
         justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        borderColor: '#607D8B',
-        borderWidth: 3
+        alignItems: "center"
     },
     title: {
         fontSize: 20

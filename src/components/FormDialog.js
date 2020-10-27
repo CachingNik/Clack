@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text } from 'react-native';
-import { IconButton, Dialog, Portal } from 'react-native-paper';
+import { IconButton, Dialog, Portal, DefaultTheme } from 'react-native-paper';
 import FormInput from "./FormInput";
 
 export default function FormDialog({ title, visible, label, close, ...rest }) {
     return(
-        <Portal>
+        <Portal theme={DefaultTheme} >
             <Dialog visible={visible} 
             {...rest} style={styles.dialog} >
             <Dialog.Content>

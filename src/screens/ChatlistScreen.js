@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
-import { FAB, Provider, Portal, Divider, TouchableRipple, Avatar } from 'react-native-paper';
+import { FAB, Provider, Portal, Divider, TouchableRipple, Avatar, DefaultTheme } from 'react-native-paper';
 import FormDialog from '../components/FormDialog';
 import LoadWait from '../components/LoadWait';
+import { AuthContext } from '../navigations/AuthProvider';
 
 const data = [
     {
@@ -49,6 +50,8 @@ const data = [
 
 export default function ChatlistScreen({ navigation }) {
 
+    const { logout } = useContext(AuthContext)
+
     const [ open, setFab ] = useState(false)
     const [ visible, setVisible ] = useState(false)
     const [ animating, setani ] = useState(true)
@@ -87,7 +90,7 @@ export default function ChatlistScreen({ navigation }) {
                 </View>
             }
 
-            <Portal>
+            <Portal theme={DefaultTheme} >
             <FAB.Group style={styles.main} 
             icon={open?'close':'cog'}
             onPress={() => {}}
@@ -99,7 +102,7 @@ export default function ChatlistScreen({ navigation }) {
                     icon: 'plus', label: 'Create Chat', onPress: cc
                 },
                 {
-                    icon: 'logout', label: 'Logout', onPress: () => {navigation.pop()}
+                    icon: 'logout', label: 'Logout', onPress: () => {logout()}
                 }
             ]} />
             </Portal>

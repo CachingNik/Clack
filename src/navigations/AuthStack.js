@@ -16,12 +16,6 @@ const screens = {
         navigationOptions: {
             headerShown: false
         }
-    },
-    Home: {
-        screen: HomeStack,
-        navigationOptions: {
-            headerShown: false
-        }
     }
 }
 

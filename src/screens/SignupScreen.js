@@ -1,12 +1,17 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import { Title, TextInput, IconButton } from 'react-native-paper';
 import FormButton from '../components/FormButton';
 import FormInput from '../components/FormInput';
+import { AuthContext } from '../navigations/AuthProvider'
 
 export default function SignupScreen({ navigation }){
 
     const [ hide, setHide ] = useState({text: true, icon: 'eye-off'})
+    const [ email, setEmail ] = useState('')
+    const [ password, setPassword ] = useState('')
+
+    const { register } = useContext(AuthContext)
 
     const click1 = () => {
         if(hide.text==true)
@@ -23,11 +28,12 @@ export default function SignupScreen({ navigation }){
         <View style={styles.login} >
             <Title style={styles.title} >Register</Title>
             <FormInput label='Name' />
-            <FormInput label='Email' />
-            <FormInput label='Password' 
+            <FormInput label='Email' value={email} onChangeText={ text => setEmail(text) } />
+            <FormInput label='Password' value={password} onChangeText={ text => setPassword(text) }
             secureTextEntry={hide.text} 
             right={<TextInput.Icon name={hide.icon} onPress={click1} size={18} />} />
-            <FormButton title='SIGNUP' mode='contained' icon='account' />
+            <FormButton title='SIGNUP' mode='contained' icon='account'
+            onPress={() => register(email, password) } />
             <IconButton icon='keyboard-backspace'
             size={30}
             color="#6646ee" 

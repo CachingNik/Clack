@@ -2,51 +2,9 @@ import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
 import { FAB, Provider, Portal, Divider, TouchableRipple, Avatar, DefaultTheme } from 'react-native-paper';
 import FormDialog from '../components/FormDialog';
-import LoadWait from '../components/LoadWait';
 import { AuthContext } from '../navigations/AuthProvider';
-
-const data = [
-    {
-        id: '1',
-        title: 'Chat_1'
-    },
-    {
-        id: '2',
-        title: 'Chat_2'
-    },
-    {
-        id: '3',
-        title: 'Chat_3'
-    },
-    {
-        id: '4',
-        title: 'Chat_4'
-    },
-    {
-        id: '5',
-        title: 'Chat_5'
-    },
-    {
-        id: '6',
-        title: 'Chat_6'
-    },
-    {
-        id: '7',
-        title: 'Chat_7'
-    },
-    {
-        id: '8',
-        title: 'Chat_8'
-    },
-    {
-        id: '9',
-        title: 'Chat_9'
-    },
-    {
-        id: '10',
-        title: 'Chat_10'
-    }
-];
+import database from '@react-native-firebase/database';
+import auth from '@react-native-firebase/auth';
 
 export default function ChatlistScreen({ navigation }) {
 
@@ -54,23 +12,44 @@ export default function ChatlistScreen({ navigation }) {
 
     const [ open, setFab ] = useState(false)
     const [ visible, setVisible ] = useState(false)
-    const [ animating, setani ] = useState(true)
+    const [ data, setData ] = useState([])
 
     useEffect(() => {
-        setani(false)
-    })
+        const getData = database()
+            .ref('/users/')
+            .on('value', (snapshot) => {
+                var arr = [];
+                snapshot.forEach(function(snap) {
+                    var item = snap.val();
+                    item.id = snap.key;
+                    if(item.id !== auth().currentUser.uid)
+                        arr.push(item)
+                })
+                setData(arr)
+                console.log(data)
+            });
+        return () =>
+            database()
+              .ref('/users/')
+              .off('value', getData);
+        }, [auth().currentUser.uid]);
 
-    const cc = () => {
-        setVisible(true)
-    }
+    //const cc = () => {
+    //    setVisible(true)
+    //}
 
     const renderItem = ({ item }) => (
         <View>
         <TouchableRipple onPress={() => {navigation.push('Chat')}}>
             <View style={styles.list} >
-                <Avatar.Image size={50} style={styles.listimage}
-                source={require('../assets/Avatar.png')} />
-                <Text style={styles.listtext} >{item.title}</Text>
+                {
+                    item.imageurl ?
+                    <Avatar.Image size={50} style={styles.listimage}
+                    source={{ uri: item.imageurl }} /> :
+                    <Avatar.Image source={require('../assets/Avatar.png')} 
+                    size={50} style={styles.listimage} />
+                }
+                <Text style={styles.listtext} >{item.name}</Text>
             </View>
         </TouchableRipple>
         </View>
@@ -78,17 +57,14 @@ export default function ChatlistScreen({ navigation }) {
 
     return(
         <Provider>
-            
-            {
-            animating == true ? <LoadWait /> :
-                <View style={styles.container}>
-                <FlatList 
-                data={data}
-                keyExtractor={(item) => item.id}
-                ItemSeparatorComponent={() => <Divider />}
-                renderItem={renderItem} />
-                </View>
-            }
+
+            <View style={styles.container}>
+            <FlatList 
+            data={data}
+            keyExtractor={(item) => item.id}
+            ItemSeparatorComponent={() => <Divider />}
+            renderItem={renderItem} />
+            </View>
 
             <Portal theme={DefaultTheme} >
             <FAB.Group style={styles.main} 
@@ -98,9 +74,9 @@ export default function ChatlistScreen({ navigation }) {
             open={open}
             fabStyle={styles.button}
             actions={[
-                {
-                    icon: 'plus', label: 'Create Chat', onPress: cc
-                },
+                //{
+                    //icon: 'plus', label: 'Create Chat', onPress: cc
+                //},
                 {
                     icon: 'logout', label: 'Logout', onPress: () => {logout()}
                 }

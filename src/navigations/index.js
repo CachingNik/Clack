@@ -8,9 +8,8 @@ export default function Providers() {
     
       <AuthProvider>
         <PaperProvider theme={DefaultTheme}>
-        <Routes />
-
-    </PaperProvider>
+          <Routes />
+        </PaperProvider>
       </AuthProvider>
   );
 }

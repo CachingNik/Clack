@@ -8,13 +8,10 @@ import LoadWait from '../components/LoadWait';
 
 export default function Routes() {
 
-  const { user, setUser } = useContext(AuthContext);
-  const [ initializing, setInitializing ] = useState(true);
+  const { user, setUser, initializing } = useContext(AuthContext);
 
-  const onAuthStateChanged = (user) => {
+  function onAuthStateChanged (user) {
     setUser(user);
-    if(initializing)
-      setInitializing(false);
   }
 
   useEffect(() => {
@@ -22,11 +19,14 @@ export default function Routes() {
     return subscriber;
   }, []);
 
-  if(initializing) return <LoadWait />;
+  if(initializing === true)
+    return (
+      <LoadWait />
+  );
 
   return (
-    <NavigationContainer>
+      <NavigationContainer>
       { user ? <HomeStack /> : <AuthStack /> }
-    </NavigationContainer>
+      </NavigationContainer>
   );
 }

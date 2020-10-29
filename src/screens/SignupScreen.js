@@ -8,6 +8,7 @@ import { AuthContext } from '../navigations/AuthProvider'
 export default function SignupScreen({ navigation }){
 
     const [ hide, setHide ] = useState({text: true, icon: 'eye-off'})
+    const [ name, setName ] = useState('')
     const [ email, setEmail ] = useState('')
     const [ password, setPassword ] = useState('')
 
@@ -27,13 +28,13 @@ export default function SignupScreen({ navigation }){
     return(
         <View style={styles.login} >
             <Title style={styles.title} >Register</Title>
-            <FormInput label='Name' />
+            <FormInput label='Name' value={name} onChangeText={ text => setName(text) } />
             <FormInput label='Email' value={email} onChangeText={ text => setEmail(text) } />
             <FormInput label='Password' value={password} onChangeText={ text => setPassword(text) }
             secureTextEntry={hide.text} 
             right={<TextInput.Icon name={hide.icon} onPress={click1} size={18} />} />
             <FormButton title='SIGNUP' mode='contained' icon='account'
-            onPress={() => register(email, password) } />
+            onPress={() => register(name, email, password) } />
             <IconButton icon='keyboard-backspace'
             size={30}
             color="#6646ee" 

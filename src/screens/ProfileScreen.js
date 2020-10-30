@@ -44,6 +44,7 @@ export default function ProfileScreen() {
             onChangeText={onChangeText}
             right={ save === false ? <TextInput.Icon name='check-circle' color='green'
             style={{marginTop: 10}} size={18} onPress={updateName} /> : null } />
+            <Text style={styles.owner} >App developed by : <Text style={{fontWeight: 'bold'}}>Nikhil Gupta</Text></Text>
         </View>
     );
 }
@@ -59,5 +60,9 @@ const styles = StyleSheet.create({
         marginLeft: -200,
         fontFamily: 'sans-serif-medium',
         fontStyle: 'italic'
+    },
+    owner:{
+        bottom: -90,
+        fontSize: 11
     }
 });

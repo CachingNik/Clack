@@ -8,6 +8,7 @@ export default function AuthProvider({ children }) {
 
     const [ user, setUser ] = useState(null);
     const [ initializing, setInitializing ] = useState(false);
+    const [ url, setUrl ] = useState(null)
 
     return(
         <AuthContext.Provider 
@@ -15,6 +16,8 @@ export default function AuthProvider({ children }) {
             user,
             setUser,
             initializing,
+            url,
+            setUrl,
             login: async (email, password) => {
                 try{
                     setInitializing(true)

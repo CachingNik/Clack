@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { StyleSheet, View, FlatList, Text } from 'react-native';
 import { FAB, Provider, Portal, Divider, TouchableRipple, Avatar, DefaultTheme } from 'react-native-paper';
-import FormDialog from '../components/FormDialog';
+import AddChat from '../components/AddChat';
 import { AuthContext } from '../navigations/AuthProvider';
-import database from '@react-native-firebase/database';
+import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+import storage from '@react-native-firebase/storage';
+import database from '@react-native-firebase/database';
 
 export default function ChatlistScreen({ navigation }) {
 
@@ -15,40 +17,44 @@ export default function ChatlistScreen({ navigation }) {
     const [ data, setData ] = useState([])
 
     useEffect(() => {
-        const getData = database()
-            .ref('/users/')
-            .on('value', (snapshot) => {
-                var arr = [];
-                snapshot.forEach(function(snap) {
-                    var item = snap.val();
-                    item.id = snap.key;
-                    if(item.id !== auth().currentUser.uid)
-                        arr.push(item)
+        const chats = firestore()
+            .collection('THREADS')
+            .onSnapshot(querySnapshot => {
+                const temp = querySnapshot.docs.map(docsnap => {
+                    if(docsnap.id.includes(auth().currentUser.uid))
+                        return{
+                            id: docsnap.id,
+                            ...docsnap.data()
+                        };
                 })
-                setData(arr)
-                console.log(data)
-            });
-        return () =>
-            database()
-              .ref('/users/')
-              .off('value', getData);
-        }, [auth().currentUser.uid]);
+                var filteredtemp = temp.filter(function (el) {
+                    return el != null;
+                  });
+                  console.log(filteredtemp)
+                setData(filteredtemp)
+            })
 
-    //const cc = () => {
-    //    setVisible(true)
-    //}
+        return () => chats();
+    }, [])
+
+    const cc = () => {
+        setVisible(true)
+    }
+
+    var url;
+    const imagechanged = (item) => {
+        url = item[item.id.replace('+', '').replace(auth().currentUser.uid, '')] + new Date();
+        return url
+    }
 
     const renderItem = ({ item }) => (
         <View>
         <TouchableRipple onPress={() => {navigation.push('Chat')}}>
             <View style={styles.list} >
                 {
-                    item.imageurl ?
-                    <Avatar.Image size={50} style={styles.listimage}
-                    source={{ uri: item.imageurl }} /> :
-                    <Avatar.Image source={require('../assets/Avatar.png')} 
+                    <Avatar.Image source={{ uri: imagechanged(item) }} 
                     size={50} style={styles.listimage} />
-                }
+                }       
                 <Text style={styles.listtext} >{item.name}</Text>
             </View>
         </TouchableRipple>
@@ -74,16 +80,16 @@ export default function ChatlistScreen({ navigation }) {
             open={open}
             fabStyle={styles.button}
             actions={[
-                //{
-                    //icon: 'plus', label: 'Create Chat', onPress: cc
-                //},
+                {
+                    icon: 'plus', label: 'Create Chat', onPress: cc
+                },
                 {
                     icon: 'logout', label: 'Logout', onPress: () => {logout()}
                 }
             ]} />
             </Portal>
 
-            <FormDialog title='Enter Name for your chat:'
+            <AddChat title='CHAT WITH CLACK'
             visible={visible}
             close={() => {setVisible(false)}}
             onDismiss={() => {setVisible(false)}} />

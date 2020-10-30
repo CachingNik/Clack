@@ -9,12 +9,11 @@ import auth from '@react-native-firebase/auth';
 
 export default function ProfileImage() {
 
-    const { user } = useContext(AuthContext)
+    const { user, url, setUrl } = useContext(AuthContext)
 
     const [ image, setImage ] = useState(null);
     const [ uploading, setUploading ] = useState(false);
     const [ fab, setFab ] = useState({ icon: 'pencil', color: '#3F51B5', label: '' })
-    const [ url, setUrl ] = useState(null)
 
     useEffect(() => {
       storage().ref(user.uid).getDownloadURL()
